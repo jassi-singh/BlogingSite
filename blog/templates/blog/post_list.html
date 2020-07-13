@@ -1,0 +1,25 @@
+<title>Posts</title>
+{% extends 'blog/base.html' %}
+{% block body_block %}
+
+{% for post in post_list %}
+{% if post.author.user.is_authenticated %}
+
+{% endif %}
+    <div>
+        <div class="post card mycard text-center">
+        <div class="card-header">
+        <p>Author : {{post.author}}</p>
+        <small>Published on : {{post.date_posted}}</small></footer>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">{{post.title}}</h2>
+            <p class="card-text">{{post.text}}</p>
+            <a href="{% url 'blog:postdetail' pk=post.pk %}" class="btn btn-primary">Read More...</a>
+        </div>
+        <div class="card-footer">Comments : {{post.approved_comments.count}}</div>
+    </div>
+
+
+{% endfor %}
+{% endblock body_block %}

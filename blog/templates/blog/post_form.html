@@ -1,0 +1,31 @@
+<title>Create/Update Post</title>
+{% extends 'blog/base.html' %}
+{% block body_block %}
+
+<form class="post_form" method="POST">
+<h2 style="padding:50px">
+    {% if school.id %}
+    Update
+    {% else %}
+    Create
+    {% endif %}
+    Post
+</h2>
+    {% csrf_token %}
+    <div>
+        <div>
+            {{form.author.label_tag}}
+            {{form.author}}
+        </div>
+        <div>
+            {{form.title.label_tag}}
+            {{form.title}}
+        </div>
+        <div>
+            {{form.text.label_tag}}
+            {{form.text}}
+        </div>
+        <input type="submit" value="Submit" class="btn btn-primary">
+    </div>
+</form>
+{% endblock body_block %}
