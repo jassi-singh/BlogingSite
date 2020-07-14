@@ -1,6 +1,10 @@
 {% extends 'blog/base.html' %}
 {% block body_block %}
+<div class="login-cont">
 <div class="login-box">
+{% if form.errors %}
+<div class="error">{{form.errors}}</div>
+{% endif %}
     <form method="post" action="{% url 'signup' %}">
         {% csrf_token %}
         <h2>Signup HERE!</h2>
@@ -28,5 +32,6 @@
         </a>
     </form>
     
+</div>
 </div>
 {% endblock body_block %}

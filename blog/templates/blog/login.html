@@ -2,6 +2,9 @@
 
 {% block body_block %}
 
+
+<div class="login-cont">
+<div class="login-box">
 {% if form.errors %}
 <p class="error">Your username and password didn't match. Please try again.</p>
 {% endif %}
@@ -15,7 +18,6 @@
 {% endif %}
 {% endif %}
 
-<div class="login-box">
     <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
         <h2>LOGIN HERE!</h2>
@@ -38,6 +40,7 @@
         </a>
     </form>
     
+</div>
 </div>
 
 {% endblock body_block %}
