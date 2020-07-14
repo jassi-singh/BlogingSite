@@ -125,7 +125,7 @@ STATIC_URL = '/blog/static/'
 STATIC_FILES_DIRS = [
     STATIC_DIR,
 ]
-
+STATIC_ROOT = os.path.join(BASE_DIR,'blog/static')
 LOGIN_REDIRECT_URL=reverse_lazy('home')
 LOGIN_URL=reverse_lazy('login')
 LOGOUT_URL=reverse_lazy('logout')
