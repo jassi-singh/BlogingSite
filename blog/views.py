@@ -18,7 +18,7 @@ class PostListView(ListView):
     model = Post
      
     def get_queryset(self):
-        return Post.objects.filter(date_posted__lte = timezone.now()).order_by('date_posted')
+        return Post.objects.filter(date_posted__lte = timezone.now()).order_by('-date_posted')
 
 class PostDetailView(FormMixin, DetailView):
     template_name = 'blog/post_detail.html'
