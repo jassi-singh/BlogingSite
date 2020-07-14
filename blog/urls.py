@@ -13,8 +13,5 @@ urlpatterns = [
     path('<slug:pk>/publish/',views.publish,name='publish'),
     path('<slug:pk>/comment_approve/',views.comment_approve,name='approve_comment'),
     path('<slug:pk>/comment_remove/',views.comment_remove,name='commentremove'), 
-    # path('<slug:pk>/comment_form',require_POST(views.MyFormView.as_view()),name='commentform'),
-    # path('<slug:pk>/add_comment/',views.PostDetailView.add_comment_to_post,name='addcomment'),
-    # path('<slug:pk>/add_comment/',views.add_comment_to_post,name='addcomment'),
 ]
       
