@@ -4,7 +4,7 @@
 
 <form class="post_form" method="POST">
 <h2 style="padding:50px">
-    {% if school.id %}
+    {% if post.id %}
     Update
     {% else %}
     Create
@@ -13,10 +13,6 @@
 </h2>
     {% csrf_token %}
     <div>
-        <div>
-            {{form.author.label_tag}}
-            {{form.author}}
-        </div>
         <div>
             {{form.title.label_tag}}
             {{form.title}}

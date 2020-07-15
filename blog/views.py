@@ -58,6 +58,13 @@ class PostCreateView(LoginRequiredMixin,CreateView):
     form_class = PostForm
     model = Post
 
+    def get_initial(self):
+        author = self.request.user   
+        return {
+            'author' : author
+        }
+    
+
 class PostUpdateView(LoginRequiredMixin,UpdateView):
     redirect_field_name = 'blog:postlist'
 
@@ -72,7 +79,7 @@ class Drafts(LoginRequiredMixin,ListView):
     model = Post
     
     def get_queryset(self):
-        return Post.objects.filter(date_posted__isnull=True).order_by('date_created')
+        return Post.objects.filter(date_posted__isnull=True).filter(author__exact=self.request.user).order_by('-date_created')
 
 class SignUpView(CreateView):
     success_url = reverse_lazy('login')
