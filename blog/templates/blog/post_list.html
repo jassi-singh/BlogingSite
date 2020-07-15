@@ -14,7 +14,7 @@
         </div>
         <div class="card-body">
             <h2 class="card-title">{{post.title}}</h2>
-            <p class="card-text">{{post.text}}</p>
+            <p class="card-text">{{post.text|slice:":50"}}....</p>
             <a href="{% url 'blog:postdetail' pk=post.pk %}" class="btn btn-primary">Read More...</a>
         </div>
         <div class="card-footer">Comments : {{post.approved_comments.count}}</div>
