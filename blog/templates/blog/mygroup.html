@@ -1,0 +1,65 @@
+{% extends 'blog/base.html' %}
+{% block body_block %}
+<div class="top-bar">
+    <h1>{{mygroup.name}}</h1>
+    {% if user == mygroup.admin %}
+    <a href="#" class="btn btn-danger">Delete Group</a>
+    {% endif %}
+</div>
+<div class="row">
+<div class="col-8">
+        <ul class="list-group mylist2">
+            <li class="list-group-item active">
+            <h3>Posts</h3>
+            <p>Total Post : {{posts.count}}</p>
+            </li>
+
+            {% for post in posts %}
+            <li class="list-group-item">
+            <div class="post card mycard text-center">
+        <div class="card-header">
+        <p>Author : {{post.author}}</p>
+        <small>Published on : {{post.date_posted}}</small></footer>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">{{post.title}}</h2>
+            <p class="card-text">{{post.text|slice:":50"}}....</p>
+            <a href="{% url 'blog:postdetail' pk=post.pk %}" class="btn btn-primary">Read More...</a>
+        </div>
+        <div class="card-footer">Comments : {{post.approved_comments.count}}</div>
+    </div>
+            </li>
+            
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="col-4">
+        <ul class="list-group mylist">
+            <li class="list-group-item">
+                <h3>Members</h3>
+                <p>Count : {{mygroup.member.count}}</p>
+            </li>
+            {% for member in mygroup.member.all %}
+            <li class="list-group-item">
+                <div class="top-bar">
+                    <div>{{member.username}}</div>
+
+                    {% if user == mygroup.admin %}
+                    <a class="btn btn-outline-danger" href="#">
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-dash" fill="currentColor"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M11 14s1 0 1-1-1-4-6-4-6 3-6 4 1 1 1 1h10zm-9.995-.944v-.002.002zM1.022 13h9.956a.274.274 0 0 0 .014-.002l.008-.002c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664a1.05 1.05 0 0 0 .022.004zm9.974.056v-.002.002zM6 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm2 2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z" />
+                        </svg>
+                    </a>
+                    {% endif %}
+
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+
+    </div>
+    
+</div>
+{% endblock body_block %}

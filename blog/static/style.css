@@ -230,3 +230,26 @@ html {
   padding: 0;
   background: transparent;
 }
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.mylist {
+  width: 80%;
+  box-shadow: 1px 2px 15px rgba(0, 0, 0, 0.795);
+}
+.mylist > li {
+  background : rgba(0,0,0,.5)
+}
+.mylist > li:first-of-type {
+  background : green;
+  
+}
+
+.mylist2 >li {
+  background: transparent;
+}

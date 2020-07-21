@@ -10,6 +10,8 @@ class Post(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_posted = models.DateTimeField(blank=True,null=True)
 
+    group = models.ForeignKey("blog.Mygroup", related_name=("posts"), on_delete=models.CASCADE,null=True,blank=True)
+
     def published(self):
         self.date_posted = timezone.localtime(timezone.now())
         self.save()
@@ -42,4 +44,12 @@ class Comment(models.Model):
     def __str__(self):
         return self.text
         
+class Mygroup(models.Model):
+    name = models.CharField(max_length=256)
+    admin = models.ForeignKey("auth.user", related_name='mygroups', on_delete=models.CASCADE)
+    member = models.ManyToManyField("auth.user")    
 
+    def __str__(self):
+        return self.name
+    
+    

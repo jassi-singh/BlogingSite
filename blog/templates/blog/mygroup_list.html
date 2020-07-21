@@ -1,0 +1,26 @@
+{% extends 'blog/base.html' %}
+{% block body_block %}
+<div class="top-bar">
+<h1>Groups</h1>
+<a href="#" class="btn btn-success">Add New Group</a>
+</div>
+{% for group in mygroup_list %}
+<div>
+        <div class="post card mycard text-center">
+        <div class="card-header">
+            <h4>Admin : {{group.admin}}</h4>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">{{group.name}}</h2>
+            <a href="{% url 'blog:group' pk=group.id %}" class="btn btn-primary">See Details</a>
+            {% if user in group.member.all %}
+            <a href="{% url 'blog:leavegroup' pk=group.id %}" class="btn btn-danger">Leave Group</a>
+            {% else %}
+            <a href="{% url 'blog:joingroup' pk=group.id %}" class="btn btn-success">Join Group</a>
+            {% endif %}
+        </div>
+        <div class="card-footer">Members : {{group.member.count}}</div>
+    </div>
+{% endfor %}
+
+{% endblock body_block %}

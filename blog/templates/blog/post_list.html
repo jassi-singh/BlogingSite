@@ -1,7 +1,7 @@
 <title>Posts</title>
 {% extends 'blog/base.html' %}
 {% block body_block %}
-
+<h1>Posts</h1>
 {% for post in post_list %}
 {% if post.author.user.is_authenticated %}
 

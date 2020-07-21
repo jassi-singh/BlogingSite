@@ -1,7 +1,7 @@
 from django.shortcuts import render,reverse,get_object_or_404,redirect
 from django.views.generic import (TemplateView,ListView,DetailView,CreateView,UpdateView,DeleteView,FormView)
-from .models import Post,Comment
-from .forms import PostForm,CommentForm
+from .models import Post,Comment,Mygroup
+from .forms import PostForm,CommentForm,MygroupForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
@@ -58,6 +58,11 @@ class PostCreateView(LoginRequiredMixin,CreateView):
     form_class = PostForm
     model = Post
 
+    def get_form_kwargs(self):
+        kwargs = super(PostCreateView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
     def get_initial(self):
         author = self.request.user   
         return {
@@ -92,20 +97,7 @@ def publish(request,pk):
     post.published()
     post.save()
     return redirect("blog:postlist")
-    
-# @login_required    
-# def add_comment_to_post(request,pk):
-#     post = get_object_or_404(Post,pk=pk)
-#     if request.method == 'POST':
-#         form = CommentForm(request.POST)
-#         if form.is_valid():
-#             comment = form.save(commit=False)
-#             comment.post = post
-#             comment.save()
-#             return redirect('blog:postdetail',pk=pk)
-#         else:
-#             form = CommentForm()
-#     return redirect('blog:postdetail', pk=post.id)
+
 
 @login_required
 def comment_approve(request,pk):
@@ -120,5 +112,34 @@ def comment_remove(request,pk):
     post = comment.post.pk
     comment.delete()
     return redirect('blog:postdetail',pk=post)
+
+class MygroupListView(ListView):
+    model = Mygroup
+    
+
+@login_required
+def join_group(request,pk):
+    group = get_object_or_404(Mygroup,pk=pk)
+    group.member.add(request.user.id)
+    group.save()
+    return redirect('blog:mygrouplist')
+
+@login_required
+def leave_group(request,pk):
+    group = get_object_or_404(Mygroup,pk=pk)
+    group.member.remove(request.user.id)
+    group.save()
+    return redirect('blog:mygrouplist')
+
+class MygroupDetailView(DetailView):
+    model = Mygroup
+    template_name = 'blog/mygroup.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(MygroupDetailView,self).get_context_data(**kwargs)
+        context["posts"] =  Post.objects.filter(group=self.kwargs['pk']).filter(date_posted__lte = timezone.now()).order_by('-date_posted')
+        return context
+    
+
 
 
