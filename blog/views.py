@@ -45,11 +45,6 @@ class PostDetailView(FormMixin, DetailView):
     def form_valid(self, form):
         form.save()
         return super(PostDetailView, self).form_valid(form)
-
-
-class MyFormView(FormView):
-    form_class = CommentForm
-    success_url = 'blog:postdetail'
     
     
 class PostCreateView(LoginRequiredMixin,CreateView):
@@ -75,6 +70,11 @@ class PostUpdateView(LoginRequiredMixin,UpdateView):
 
     form_class = PostForm
     model = Post
+
+    def get_form_kwargs(self):
+        kwargs = super(PostUpdateView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
 class PostDeleteView(LoginRequiredMixin,DeleteView):
     model = Post
@@ -113,9 +113,26 @@ def comment_remove(request,pk):
     comment.delete()
     return redirect('blog:postdetail',pk=post)
 
-class MygroupListView(ListView):
+class MygroupListView(ListView,FormMixin):
     model = Mygroup
-    
+    form_class = MygroupForm
+
+
+    def get_success_url(self):
+        return reverse('blog:mygrouplist')
+
+    def get_context_data(self, **kwargs):
+        context = super(MygroupListView, self).get_context_data(**kwargs)
+        context['form'] = MygroupForm(initial={'admin' : self.request.user.id})
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form=self.get_form()
+        form.save(commit=True)
+        group = Mygroup.objects.all().last()
+        group.member.add(request.user.id)
+        group.save()
+        return self.get(request, *args, **kwargs)
 
 @login_required
 def join_group(request,pk):
@@ -139,7 +156,18 @@ class MygroupDetailView(DetailView):
         context = super(MygroupDetailView,self).get_context_data(**kwargs)
         context["posts"] =  Post.objects.filter(group=self.kwargs['pk']).filter(date_posted__lte = timezone.now()).order_by('-date_posted')
         return context
-    
+
+@login_required
+def delete_member(request,pk,sk):
+    group = get_object_or_404(Mygroup,pk=pk)
+    group.member.remove(sk)
+    group.save()
+    return redirect('blog:group', pk=pk)
+
+@login_required
+def delete_group(request,pk):
+    Mygroup.objects.filter(id=pk).delete()
+    return redirect('blog:mygrouplist')
 
 
 

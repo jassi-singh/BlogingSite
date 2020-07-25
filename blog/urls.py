@@ -17,5 +17,7 @@ urlpatterns = [
     path('<slug:pk>/join_group/',views.join_group,name = 'joingroup'),
     path('<slug:pk>/leave_group/',views.leave_group,name = 'leavegroup'),
     path('<slug:pk>/mygroup/',views.MygroupDetailView.as_view(),name='group'),
+    path('<slug:pk>/mygroup_delete/',views.delete_group,name='groupdelete'),
+    path('<slug:pk>/mygroup/remove/<slug:sk>/',views.delete_member,name='remove_member'),
 ]
       
